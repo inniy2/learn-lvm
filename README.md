@@ -362,10 +362,24 @@ Creating journal (32768 blocks): done
 Writing superblocks and filesystem accounting information: done
 ```
 
+
 # 8) Format as xfs  
 ```bash
-TBD
+root$>  mkfs.xfs /dev/vg1/lv1
 ```
+```bash
+[root@testmysql102 /]#  mkfs.xfs /dev/vg1/lv1
+meta-data=/dev/vg1/lv1           isize=512    agcount=4, agsize=42598400 blk
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=0, sparse=0
+data     =                       bsize=4096   blocks=170393600, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal log           bsize=4096   blocks=83200, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+```
+
 
 # 9) Mount  
 ```bash
@@ -428,6 +442,23 @@ resize2fs 1.42.9 (28-Dec-2013)
 Filesystem at /dev/vg1/lv1 is mounted on /mnt; on-line resizing required
 old_desc_blocks = 82, new_desc_blocks = 115
 The filesystem on /dev/vg1/lv1 is now 241172480 blocks long.
+```
+- xfs: xfs_growfs  
+```bash
+root$>  xfs_growfs /dev/vg1/lv1
+```
+```bash
+[root@testmysql102 mnt]#  xfs_growfs /dev/vg1/lv1
+meta-data=/dev/mapper/vg1-lv1    isize=512    agcount=4, agsize=42598400 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=0 spinodes=0
+data     =                       bsize=4096   blocks=170393600, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal               bsize=4096   blocks=83200, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+data blocks changed from 170393600 to 241172480
 ```
 ```bash
 root$>  lvdisplay /dev/vg1/lv1 
